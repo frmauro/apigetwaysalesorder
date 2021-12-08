@@ -93,6 +93,15 @@ app.MapPost("/createOrder", (OrderDto order) =>
 .WithName("CreateOrder");
 
 
+//update order 
+app.MapPut("/updateOrder/{id}", (int id, OrderDto order) =>
+{
+    return id;
+
+})
+.WithName("UpdateOrder");
+
+
 
 app.Run();
 
