@@ -83,5 +83,16 @@ app.MapGet("/getOrderById/{id}", (int id) =>
 .WithName("GetOrderById");
 
 
+//create order 
+app.MapPost("/createOrder", (OrderDto order) =>
+{
+    order.Id = 1;
+    return order.Id;
+
+})
+.WithName("CreateOrder");
+
+
+
 app.Run();
 
