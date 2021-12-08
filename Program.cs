@@ -75,6 +75,20 @@ app.MapPost("/updateAmount", (List<ProductDto> items) =>
 .WithName("UpdateAmount");
 
 
+
+//get all orders
+app.MapGet("/getAllOrders", () =>
+{
+    return new List<OrderDto>() { new OrderDto(1, "Order 001", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
+        new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
+    }), new OrderDto(1, "Order 002", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
+        new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
+    }) }.ToArray();
+
+})
+.WithName("GetAllOrders");
+
+
 app.Run();
 
 record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
