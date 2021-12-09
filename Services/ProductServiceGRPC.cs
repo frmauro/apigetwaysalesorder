@@ -1,29 +1,36 @@
 using Grpc.Core;
+using Grpc.Net.Client;
 
 namespace ApiGetwaySalesOrder.Services
 {
-    public class ProductServiceGRPC : SalesProductApi.ProductServiceProto.ProductServiceProtoBase
+    public class ProductServiceGRPC 
     {
-                public override Task<SalesProductApi.ItemResponse> GetProducts(SalesProductApi.Empty request, ServerCallContext _context){
+        private const string SERVICEURL = "http://productapi/Product/";
 
-            List<SalesProductApi.ProductResponse> products = new List<SalesProductApi.ProductResponse>();
-                    SalesProductApi.ItemResponse response = new SalesProductApi.ItemResponse();
+        // public override Task<SalesProductApi.ItemResponse> GetProducts(SalesProductApi.Empty request, ServerCallContext _context)
+        // {
 
-                    //var productsDb = _context.Products.ToList();
+        //     using var channel = GrpcChannel.ForAddress(SERVICEURL, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+        //     //var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
 
-                    // productsDb.ToList().ForEach(productDb => {
-                    //     var product = new SalesProductApi.ProductResponse();
-                    //     product.Id = productDb.ProductId;
-                    //     product.Description = productDb.Description;
-                    //     product.Amount = productDb.Amount.ToString();
-                    //     product.Price = productDb.Price.ToString();
-                    //     product.Status = productDb.Status.ToString();
-                    //     products.Add(product);
-                    // });
+        //     List<SalesProductApi.ProductResponse> products = new List<SalesProductApi.ProductResponse>();
+        //     SalesProductApi.ItemResponse response = new SalesProductApi.ItemResponse();
 
-                    response.Items.AddRange(products);
-                    return Task.FromResult(response);
+        //     //var productsDb = _context.Products.ToList();
 
-        }
+        //     // productsDb.ToList().ForEach(productDb => {
+        //     //     var product = new SalesProductApi.ProductResponse();
+        //     //     product.Id = productDb.ProductId;
+        //     //     product.Description = productDb.Description;
+        //     //     product.Amount = productDb.Amount.ToString();
+        //     //     product.Price = productDb.Price.ToString();
+        //     //     product.Status = productDb.Status.ToString();
+        //     //     products.Add(product);
+        //     // });
+
+        //     response.Items.AddRange(products);
+        //     return Task.FromResult(response);
+
+        // }
     }
 }
