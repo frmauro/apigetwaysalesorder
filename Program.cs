@@ -1,4 +1,5 @@
 using ApiGetwaySalesOrder.Dtos;
+using ApiGetwaySalesOrder.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddSingleton<ProductServiceGRPC>();
 //builder.Services.addGrp
 
 var app = builder.Build();
@@ -24,7 +26,7 @@ if (app.Environment.IsDevelopment())
 
 
 //user autentication
-app.MapGet("/getByEmailAndPassword", () =>
+app.MapGet("/getByEmailAndPassword", (ProductServiceGRPC serviceGRPC) =>
 {
     return new UserAuthDto("611aa80245c2ed2212c3ec3d", "frmauro8@gmail.com", "123", "99999999999");
 
@@ -33,9 +35,12 @@ app.MapGet("/getByEmailAndPassword", () =>
 
 
 //get all product
-app.MapGet("/getAllProduct", () =>
+app.MapGet("/getAllProduct", (ProductServiceGRPC serviceGRPC) =>
 {
-    return new List<ProductDto>() { new ProductDto(1, "Product 001", 195, "Active", 200.0), new ProductDto(1, "Product 002", 200, "Active", 300.0) }.ToArray();
+    var products = serviceGRPC.GetProducts(new SalesProductApi.Empty());
+    //return new List<ProductDto>() { new ProductDto(1, "Product 001", 195, "Active", 200.0), new ProductDto(1, "Product 002", 200, "Active", 300.0) }.ToArray();
+    new List<ProductDto>() { new ProductDto(1, "Product 001", 195, "Active", 200.0), new ProductDto(1, "Product 002", 200, "Active", 300.0) }.ToArray();
+    return products;
 
 })
 .WithName("GetAllProduct");
