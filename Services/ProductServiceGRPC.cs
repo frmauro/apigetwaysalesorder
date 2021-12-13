@@ -1,5 +1,6 @@
 using Grpc.Core;
 using Grpc.Net.Client;
+using ApiGetwaySalesOrder.Dtos;
 
 namespace ApiGetwaySalesOrder.Services
 {
@@ -33,21 +34,49 @@ namespace ApiGetwaySalesOrder.Services
 
             var reply = await client.GetProductsAsync(request);
 
-            //var productsDb = _context.Products.ToList();
-
-            // productsDb.ToList().ForEach(productDb => {
-            //     var product = new SalesProductApi.ProductResponse();
-            //     product.Id = productDb.ProductId;
-            //     product.Description = productDb.Description;
-            //     product.Amount = productDb.Amount.ToString();
-            //     product.Price = productDb.Price.ToString();
-            //     product.Status = productDb.Status.ToString();
-            //     products.Add(product);
-            // });
-
             response.Items.AddRange(products);
             return Task.FromResult(reply).Result;
 
         }
+
+
+        public async Task<SalesProductApi.ItemResponse> GetProductById(int id)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
+
+            SalesProductApi.ProductResponse product = new SalesProductApi.ProductResponse();
+            SalesProductApi.ItemResponse response = new SalesProductApi.ItemResponse();
+            SalesProductApi.ProductId productId = new SalesProductApi.ProductId();
+            productId.Id = id;
+
+            var reply = await client.GetProductAsync(productId);
+
+            response.Items.Add(reply);
+            return Task.FromResult(response).Result;
+        }
+
+        public async Task<int> InsertProduct(ProductDto dto)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
+
+            SalesProductApi.ProductRequest request = new SalesProductApi.ProductRequest();
+            request.Amount = dto.Amount.ToString();
+            request.Description = dto.Description;
+            request.Price = dto.Price.ToString();
+            request.Status = dto.Status;
+            //SalesProductApi.ProductReply response = new SalesProductApi.ProductReply();
+
+            var response = await client.SendProductAsync(request);
+            //SalesProductApi.ProductReply productReply = response.Message;
+            return 1;
+        }
+
+
     }
 }

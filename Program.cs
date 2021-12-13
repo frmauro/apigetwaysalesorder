@@ -46,12 +46,28 @@ app.MapGet("/getAllProduct", (ProductServiceGRPC serviceGRPC) =>
 .WithName("GetAllProduct");
 
 //get product By Id
-app.MapGet("/getProductById/{id}", (int id) =>
+app.MapGet("/getProductById/{id}", (int id, ProductServiceGRPC serviceGRPC) =>
 {
-    return new ProductDto(1, "Product 001", 195, "Active", 200.0);
+    var product = serviceGRPC.GetProductById(id);
+    new ProductDto(1, "Product 001", 195, "Active", 200.0);
+    return product;
 
 })
 .WithName("GetProductById");
+
+
+
+//create product 
+app.MapPost("/createProduct", (ProductDto dto, ProductServiceGRPC serviceGRPC) =>
+{
+    var id = serviceGRPC.InsertProduct(dto);
+    new ProductDto(1, "Product 001", 195, "Active", 200.0);
+    return id;
+
+})
+.WithName("CreateProduct");
+
+
 
 
 //update amount product 
