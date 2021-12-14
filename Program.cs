@@ -81,10 +81,10 @@ app.MapPut("/updateProduct", (ProductDto dto, ProductServiceGRPC serviceGRPC) =>
 
 
 //update amount product 
-app.MapPost("/updateAmount", (List<ProductDto> items) =>
+app.MapPost("/updateAmount", (UpdateAmountDto dto, ProductServiceGRPC serviceGRPC) =>
 {
-    return items.ToArray();
-
+    var result = serviceGRPC.UpdateAmount(dto);
+    return result;
 })
 .WithName("UpdateAmount");
 

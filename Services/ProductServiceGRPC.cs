@@ -98,6 +98,26 @@ namespace ApiGetwaySalesOrder.Services
         }
 
 
+        public async Task<string> UpdateAmount(UpdateAmountDto dto)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
+
+            var request = new SalesProductApi.ItemUpdateAmount();
+            if (dto.Items != null)
+                dto.Items.ForEach(itemdto =>
+                {
+                    var item = new SalesProductApi.UpdateAmountRequest();
+                    item.Amount = itemdto.Quantity.ToString();
+                    item.Id = Convert.ToInt32(itemdto.Id);
+                    request.Items.Add(item);
+                });
+
+            var response = await client.UpdateAmountAsync(request);
+            return response.Message;
+        }
 
 
     }
