@@ -74,8 +74,30 @@ namespace ApiGetwaySalesOrder.Services
 
             var response = await client.SendProductAsync(request);
             //SalesProductApi.ProductReply productReply = response.Message;
-            return 1;
+            return Convert.ToInt32(response.Message);
         }
+
+
+        public async Task<int> UpdateProduct(ProductDto dto)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
+
+            SalesProductApi.ProductRequest request = new SalesProductApi.ProductRequest();
+            request.Id = Convert.ToInt32(dto.Id);
+            request.Amount = dto.Amount.ToString();
+            request.Description = dto.Description;
+            request.Price = dto.Price.ToString();
+            request.Status = dto.Status;
+
+            var response = await client.SendProductAsync(request);
+            //SalesProductApi.ProductReply productReply = response.Message;
+            return Convert.ToInt32(response.Message);
+        }
+
+
 
 
     }

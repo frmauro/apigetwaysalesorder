@@ -68,6 +68,16 @@ app.MapPost("/createProduct", (ProductDto dto, ProductServiceGRPC serviceGRPC) =
 .WithName("CreateProduct");
 
 
+//update product 
+app.MapPut("/updateProduct", (ProductDto dto, ProductServiceGRPC serviceGRPC) =>
+{
+    var id = serviceGRPC.UpdateProduct(dto);
+    //new ProductDto(1, "Product 001", 195, "Active", 200.0);
+    return id;
+
+})
+.WithName("UpdateProduct");
+
 
 
 //update amount product 
