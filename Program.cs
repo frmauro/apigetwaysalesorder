@@ -9,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddSingleton<ProductServiceGRPC>();
+builder.Services.AddSingleton<UserServiceGRPC>();
 //builder.Services.addGrp
 
 var app = builder.Build();
@@ -25,15 +26,20 @@ if (app.Environment.IsDevelopment())
 
 
 
+// ******************************* START COMUNICATION WITH API USER **********************************************************
 //user autentication
-app.MapGet("/getByEmailAndPassword", (ProductServiceGRPC serviceGRPC) =>
+app.MapGet("/getByEmailAndPassword", (UserServiceGRPC serviceGRPC) =>
 {
     return new UserAuthDto("611aa80245c2ed2212c3ec3d", "frmauro8@gmail.com", "123", "99999999999");
 
 })
 .WithName("GetByEmailAndPassword");
+// ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
 
+
+
+// ******************************* START COMUNICATION WITH API PRODUCT **********************************************************
 //get all product
 app.MapGet("/getAllProduct", (ProductServiceGRPC serviceGRPC) =>
 {
@@ -87,9 +93,11 @@ app.MapPost("/updateAmount", (UpdateAmountDto dto, ProductServiceGRPC serviceGRP
     return result;
 })
 .WithName("UpdateAmount");
+// ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
 
 
+// ******************************* START COMUNICATION WITH API ORDER **********************************************************
 //get all orders
 app.MapGet("/getAllOrders", () =>
 {
@@ -132,6 +140,7 @@ app.MapPut("/updateOrder/{id}", (int id, OrderDto order) =>
 
 })
 .WithName("UpdateOrder");
+// ******************************* END COMUNICATION WITH API ORDER **********************************************************
 
 
 

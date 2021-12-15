@@ -1,0 +1,35 @@
+syntax = "proto3";
+option csharp_namespace = "SalesUserApi";
+package SalesUserApi;
+
+service UserService {
+    rpc GetAll (Empty) returns (UserList) {}
+    rpc Get (UserRequestId) returns (User) {}
+    rpc FindByEmailAndPassword (UserEmailPassword) returns (User) {}
+}
+
+message Empty {}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string password = 4;
+    string token = 5;
+    string userType = 6;
+    string status = 7;
+}
+
+
+message UserEmailPassword {
+    string email = 1;
+    string password = 2;
+}
+
+message UserList {
+    repeated User users = 1;
+}
+
+message UserRequestId {
+    string id = 1;
+}
