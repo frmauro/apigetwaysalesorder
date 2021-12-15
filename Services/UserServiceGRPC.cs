@@ -13,8 +13,8 @@ namespace ApiGetwaySalesOrder.Services
         //private int PORT = 9090;
 
         // use from local to docker container without compose
-        //private String SERVICEURL = "localhost";
-        private String SERVICEURL = "172.17.0.6";
+        private String SERVICEURL = "http://127.0.0.1:";
+        //private String SERVICEURL = "172.17.0.6";
         // use from container to docker container without compose
         //private String SERVICEURL = "salesusernode";
         // use from container to docker container with compose
@@ -23,21 +23,21 @@ namespace ApiGetwaySalesOrder.Services
         //private String SERVICEURL = "apiusergrpc";
 
 
-        //    public async Task<SalesProductApi.ItemResponse> GetProducts(SalesProductApi.Empty request)
-        // {
-        //     var url = SERVICEURL + PORT;
-        //     AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-        //     using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
-        //     var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
+           public async Task<SalesUserApi.User> GetByEmailAndPassword(UserEmailPasswordDto dto)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesUserApi.UserService.UserServiceClient(channel);
 
-        //     List<SalesProductApi.ProductResponse> products = new List<SalesProductApi.ProductResponse>();
-        //     SalesProductApi.ItemResponse response = new SalesProductApi.ItemResponse();
+            SalesUserApi.UserEmailPassword request = new SalesUserApi.UserEmailPassword();
+            request.Email = dto.Email;
+            request.Password = dto.Password;
 
-        //     var reply = await client.GetProductsAsync(request);
+            var reply = await client.FindByEmailAndPasswordAsync(request);
 
-        //     response.Items.AddRange(products);
-        //     return Task.FromResult(reply).Result;
+            return Task.FromResult(reply).Result;
 
-        // }
+        }
     }
 }

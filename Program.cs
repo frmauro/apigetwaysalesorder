@@ -28,12 +28,13 @@ if (app.Environment.IsDevelopment())
 
 // ******************************* START COMUNICATION WITH API USER **********************************************************
 //user autentication
-app.MapGet("/getByEmailAndPassword", (UserServiceGRPC serviceGRPC) =>
+app.MapPost("/findByEmailAndPassword", (UserEmailPasswordDto dto, UserServiceGRPC serviceGRPC) =>
 {
-    return new UserAuthDto("611aa80245c2ed2212c3ec3d", "frmauro8@gmail.com", "123", "99999999999");
-
+    var result = serviceGRPC.GetByEmailAndPassword(dto);
+    //new UserAuthDto("611aa80245c2ed2212c3ec3d", "frmauro8@gmail.com", "123", "99999999999");
+    return result;
 })
-.WithName("GetByEmailAndPassword");
+.WithName("FindByEmailAndPassword");
 // ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
 
