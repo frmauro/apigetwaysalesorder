@@ -35,6 +35,13 @@ app.MapPost("/findByEmailAndPassword", (UserEmailPasswordDto dto, UserServiceGRP
     return result;
 })
 .WithName("FindByEmailAndPassword");
+
+//gel all users
+app.MapGet("/users", (UserServiceGRPC serviceGRPC) => 
+{
+    var products = serviceGRPC.GetUsers(new SalesUserApi.Empty());
+    return products;
+});
 // ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
 

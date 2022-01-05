@@ -23,7 +23,7 @@ namespace ApiGetwaySalesOrder.Services
         //private String SERVICEURL = "apiusergrpc";
 
 
-           public async Task<SalesUserApi.User> GetByEmailAndPassword(UserEmailPasswordDto dto)
+        public async Task<SalesUserApi.User> GetByEmailAndPassword(UserEmailPasswordDto dto)
         {
             var url = SERVICEURL + PORT;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
@@ -39,5 +39,35 @@ namespace ApiGetwaySalesOrder.Services
             return Task.FromResult(reply).Result;
 
         }
+
+
+        public async Task<List<SalesUserApi.User>> GetUsers(SalesUserApi.Empty request)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesUserApi.UserService.UserServiceClient(channel);
+
+            var reply = await client.GetAllAsync(request);
+            var usersResult = reply.Users; 
+            List<SalesUserApi.User> users = new List<SalesUserApi.User>();
+
+            foreach (var userResult in usersResult)
+            {
+                SalesUserApi.User user  = new SalesUserApi.User();
+                user.Id = userResult.Id;
+                user.Name = userResult.Name;
+                user.Email = userResult.Email;
+                user.Password = userResult.Password;
+                user.Token = userResult.Token;
+                user.UserType = userResult.UserType;
+                user.Status = userResult.Status;
+                users.Add(user);
+            }
+
+            return Task.FromResult(users).Result;
+
+        }
+
     }
 }
