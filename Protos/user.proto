@@ -6,6 +6,8 @@ service UserService {
     rpc GetAll (Empty) returns (UserList) {}
     rpc Get (UserRequestId) returns (User) {}
     rpc FindByEmailAndPassword (UserEmailPassword) returns (User) {}
+    rpc Create (User) returns (User) {}
+    rpc Update (User) returns (User) {}
 }
 
 message Empty {}

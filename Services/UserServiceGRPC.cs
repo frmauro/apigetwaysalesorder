@@ -69,5 +69,31 @@ namespace ApiGetwaySalesOrder.Services
 
         }
 
+
+        public async Task<SalesUserApi.User> Get(SalesUserApi.UserRequestId request)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesUserApi.UserService.UserServiceClient(channel);
+
+            var reply = await client.GetAsync(request);
+
+            SalesUserApi.User user  = new SalesUserApi.User();
+            user.Id = reply.Id;
+            user.Name = reply.Name;
+            user.Email = reply.Email;
+            user.Password = reply.Password;
+            user.Token = reply.Token;
+            user.UserType = reply.UserType;
+            user.Status = reply.Status;
+
+            return Task.FromResult(user).Result;
+
+        }
+
+
+
+
     }
 }

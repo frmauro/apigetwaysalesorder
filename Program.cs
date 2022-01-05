@@ -39,9 +39,19 @@ app.MapPost("/findByEmailAndPassword", (UserEmailPasswordDto dto, UserServiceGRP
 //gel all users
 app.MapGet("/users", (UserServiceGRPC serviceGRPC) => 
 {
-    var products = serviceGRPC.GetUsers(new SalesUserApi.Empty());
-    return products;
+    var users = serviceGRPC.GetUsers(new SalesUserApi.Empty());
+    return users;
 });
+
+//gel user by id
+app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) => 
+{
+    SalesUserApi.UserRequestId request = new SalesUserApi.UserRequestId();
+    request.Id = id;
+    var user = serviceGRPC.Get(request);
+    return user;
+});
+
 // ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
 
