@@ -116,6 +116,26 @@ namespace ApiGetwaySalesOrder.Services
         }
 
 
+        public async Task<UserUpdateDto> Update(UserUpdateDto dto)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesUserApi.UserService.UserServiceClient(channel);
+
+            SalesUserApi.User request = new SalesUserApi.User();
+            request.Id = dto.Id;
+            request.Name = dto.name;
+            request.Email = dto.Email;
+            request.Password = dto.Password;
+            request.UserType = dto.UserType;
+            request.Status = dto.Status;
+
+            var reply = await client.UpdateAsync(request);
+
+            return Task.FromResult(dto).Result;
+
+        }
 
 
 

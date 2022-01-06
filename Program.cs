@@ -28,13 +28,13 @@ if (app.Environment.IsDevelopment())
 
 // ******************************* START COMUNICATION WITH API USER **********************************************************
 //user autentication
-app.MapPost("/findByEmailAndPassword", (UserEmailPasswordDto dto, UserServiceGRPC serviceGRPC) =>
+app.MapPost("/findUserByEmailAndPassword", (UserEmailPasswordDto dto, UserServiceGRPC serviceGRPC) =>
 {
     var result = serviceGRPC.GetByEmailAndPassword(dto);
     //new UserAuthDto("611aa80245c2ed2212c3ec3d", "frmauro8@gmail.com", "123", "99999999999");
     return result;
 })
-.WithName("FindByEmailAndPassword");
+.WithName("FindUserByEmailAndPassword");
 
 //gel all users
 app.MapGet("/users", (UserServiceGRPC serviceGRPC) => 
@@ -53,12 +53,18 @@ app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) =>
 });
 
 //create user
-app.MapPost("/Create", (UserCreateDto dto, UserServiceGRPC serviceGRPC) => 
+app.MapPost("/CreateUser", (UserCreateDto dto, UserServiceGRPC serviceGRPC) => 
 {
     var user = serviceGRPC.Create(dto);
     return user;
 });
 
+//update user
+app.MapPut("/UpdateUser", (UserUpdateDto dto, UserServiceGRPC serviceGRPC) => 
+{
+    var user = serviceGRPC.Update(dto);
+    return user;
+});
 
 // ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 

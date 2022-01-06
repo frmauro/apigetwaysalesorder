@@ -18,11 +18,14 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "description": "Or
 
 
 ## user autenticate request POST via CURL
- curl -X POST -H "Content-Type: application/json" -d '{"Email": "frmauro8@gmail.com", "Password": "123"}' http://localhost:5158/FindByEmailAndPassword
+ curl -X POST -H "Content-Type: application/json" -d '{"Email": "frmauro8@gmail.com", "Password": "123"}' http://localhost:5158/FindUserByEmailAndPassword
 
 
 ## create user request POST via CURL
- curl -X POST -H "Content-Type: application/json" -d '{"Name": "Joca Silva", "Email": "jocas@gmail.com", "Password": "123", "UserType": "Client", "Status": "Active"}' http://localhost:5158/create
+ curl -X POST -H "Content-Type: application/json" -d '{"Name": "Joca Silva", "Email": "jocas@gmail.com", "Password": "123", "UserType": "Client", "Status": "Active"}' http://localhost:5158/createUser
 
+
+## update user request PUT via CURL
+ curl -X PUT -H "Content-Type: application/json" -d '{"id": "61d7058ea8537e2b468f8d75", "Name": "Joca Silva", "Email": "jocas@gmail.com", "Password": "123", "UserType": "Client", "Status": "Active"}' http://localhost:5158/updateUser
 
 
