@@ -49,12 +49,12 @@ namespace ApiGetwaySalesOrder.Services
             var client = new SalesUserApi.UserService.UserServiceClient(channel);
 
             var reply = await client.GetAllAsync(request);
-            var usersResult = reply.Users; 
+            var usersResult = reply.Users;
             List<SalesUserApi.User> users = new List<SalesUserApi.User>();
 
             foreach (var userResult in usersResult)
             {
-                SalesUserApi.User user  = new SalesUserApi.User();
+                SalesUserApi.User user = new SalesUserApi.User();
                 user.Id = userResult.Id;
                 user.Name = userResult.Name;
                 user.Email = userResult.Email;
@@ -79,7 +79,7 @@ namespace ApiGetwaySalesOrder.Services
 
             var reply = await client.GetAsync(request);
 
-            SalesUserApi.User user  = new SalesUserApi.User();
+            SalesUserApi.User user = new SalesUserApi.User();
             user.Id = reply.Id;
             user.Name = reply.Name;
             user.Email = reply.Email;
@@ -91,6 +91,30 @@ namespace ApiGetwaySalesOrder.Services
             return Task.FromResult(user).Result;
 
         }
+
+
+        public async Task<UserCreateDto> Create(UserCreateDto dto)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesUserApi.UserService.UserServiceClient(channel);
+
+            SalesUserApi.User request = new SalesUserApi.User();
+            request.Name = dto.name;
+            request.Email = dto.Email;
+            request.Password = dto.Password;
+            request.UserType = dto.UserType;
+            request.Status = dto.Status;
+
+            var reply = await client.CreateAsync(request);
+
+            dto.Id = reply.Id;
+
+            return Task.FromResult(dto).Result;
+
+        }
+
 
 
 

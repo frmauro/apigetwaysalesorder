@@ -21,5 +21,8 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "description": "Or
  curl -X POST -H "Content-Type: application/json" -d '{"Email": "frmauro8@gmail.com", "Password": "123"}' http://localhost:5158/FindByEmailAndPassword
 
 
+## create user request POST via CURL
+ curl -X POST -H "Content-Type: application/json" -d '{"Name": "Joca Silva", "Email": "jocas@gmail.com", "Password": "123", "UserType": "Client", "Status": "Active"}' http://localhost:5158/create
+
 
 

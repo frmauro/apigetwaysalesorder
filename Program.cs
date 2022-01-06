@@ -43,7 +43,7 @@ app.MapGet("/users", (UserServiceGRPC serviceGRPC) =>
     return users;
 });
 
-//gel user by id
+//get user by id
 app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) => 
 {
     SalesUserApi.UserRequestId request = new SalesUserApi.UserRequestId();
@@ -51,6 +51,14 @@ app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) =>
     var user = serviceGRPC.Get(request);
     return user;
 });
+
+//create user
+app.MapPost("/Create", (UserCreateDto dto, UserServiceGRPC serviceGRPC) => 
+{
+    var user = serviceGRPC.Create(dto);
+    return user;
+});
+
 
 // ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
