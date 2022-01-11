@@ -10,6 +10,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddSingleton<ProductServiceGRPC>();
 builder.Services.AddSingleton<UserServiceGRPC>();
+builder.Services.AddSingleton<OrderServiceGRPC>();
 //builder.Services.addGrp
 
 var app = builder.Build();
@@ -131,14 +132,16 @@ app.MapPost("/updateAmount", (UpdateAmountDto dto, ProductServiceGRPC serviceGRP
 
 // ******************************* START COMUNICATION WITH API ORDER **********************************************************
 //get all orders
-app.MapGet("/getAllOrders", () =>
+app.MapGet("/getAllOrders", (OrderServiceGRPC serviceGRPC) =>
 {
-    return new List<OrderDto>() { new OrderDto(1, "Order 001", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
-        new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
-    }), new OrderDto(1, "Order 002", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
-        new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
-    }) }.ToArray();
+    // return new List<OrderDto>() { new OrderDto(1, "Order 001", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
+    //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
+    // }), new OrderDto(1, "Order 002", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
+    //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
+    // }) }.ToArray();
 
+    var result = serviceGRPC.GetOrders(new SalesOrderApi.Empty());
+    return result;
 })
 .WithName("GetAllOrders");
 

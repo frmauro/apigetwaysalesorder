@@ -1,0 +1,76 @@
+syntax = "proto3";
+option csharp_namespace = "SalesOrderApi";
+package SalesOrderApi;
+
+//the order service definition
+service OrderServiceProto {
+    // Sends a order
+    rpc SendOrder (OrderRequest) returns (OrderReply);
+    // get all orders
+    rpc GetOrders (Empty) returns (ItemResponse);
+    // get order by id
+    rpc GetOrder (OrderId) returns (OrderResponse);
+    // update order
+    rpc UpdateOrder (OrderRequest) returns (OrderReply);
+}
+
+
+// The request message containing the fields product.
+message OrderRequest {
+    int32 id = 1;
+    string description = 2;
+    string moment = 3;
+    string status = 4;
+    string userid = 5;
+    ItemsOrderRequest items = 6;
+  }
+
+  message ItemsOrderRequest {
+    repeated ItemOrderRequest items = 1;
+  }
+
+  message ItemOrderRequest {
+    int32 id = 1;
+    string description = 2;
+    int32 quantity = 3;
+    string price = 4;
+    int32 productId = 5;
+  }
+
+  // The response message containing the product.
+  message OrderReply {
+    int32 id = 1;
+  }
+
+
+  message OrderId {
+    int32 id = 1;
+  }
+
+  message Empty {}
+
+  message ItemResponse {
+    repeated OrderResponse items = 1;
+  }
+
+  message OrderResponse {
+    int32 id = 1;
+    string description = 2;
+    string moment = 3;
+    string status = 4;
+    string userid = 5;
+    ItemsOrderResponse items = 6;
+  }
+
+  message ItemsOrderResponse {
+    repeated ItemOrderResponse items = 1;
+  }
+
+  message ItemOrderResponse {
+    int32 id = 1;
+    string description = 2;
+    int32 quantity = 3;
+    string price = 4;
+    int32 productId = 5;
+  }
+
