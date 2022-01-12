@@ -150,24 +150,42 @@ app.MapGet("/getAllOrders", (OrderServiceGRPC serviceGRPC) =>
 //get order by id
 app.MapGet("/getOrder/{id}", (int id, OrderServiceGRPC serviceGRPC) =>
 {
-    // return new OrderDto(1, "Order 001", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
-    //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
-    // });
-
     var request = new SalesOrderApi.OrderId();
     request.Id = id;
     var result = serviceGRPC.GetOrder(request);
+    // var dto = new OrderDto(result.Id, result.Description, result.Moment, Convert.ToInt32(result.Status), result.Userid, new List<OrderItemDto>() {
+    //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
+    // });
     return result;
 })
 .WithName("GetOrder");
 
 
 //create order 
-app.MapPost("/createOrder", (OrderDto order) =>
+app.MapPost("/createOrder", (OrderDto order, OrderServiceGRPC serviceGRPC) =>
 {
-    order.Id = 1;
-    return order.Id;
+    var request = new SalesOrderApi.OrderRequest();
+    request.Description = order.Description;
+    //request.Moment = order.Moment;
+    request.Status = order.OrderStatus.ToString();
+    request.Userid = order.UserId;
 
+    var itemsOrderRequest = new List<SalesOrderApi.ItemOrderRequest>();
+    if (order.Items != null)
+        order.Items.ForEach(i =>
+        {
+            var itemOrderRequest = new SalesOrderApi.ItemOrderRequest();
+            itemOrderRequest.Description = i.Description;
+            itemOrderRequest.Price = i.Price.ToString();
+            itemOrderRequest.ProductId = i.ProductId.HasValue ? i.ProductId.Value : 0;
+            itemOrderRequest.Quantity = i.Quantity.HasValue ? i.Quantity.Value : 0;
+            itemsOrderRequest.Add(itemOrderRequest);
+        });
+
+    request.Items = new SalesOrderApi.ItemsOrderRequest();
+    request.Items.Items.AddRange(itemsOrderRequest);
+    var reply = serviceGRPC.SendOrder(request);
+    return reply;
 })
 .WithName("CreateOrder");
 

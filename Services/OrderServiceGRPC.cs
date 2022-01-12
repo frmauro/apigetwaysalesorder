@@ -39,17 +39,24 @@ namespace ApiGetwaySalesOrder.Services
         }
 
 
-        public async Task<SalesOrderApi.OrderResponse> GetOrder(SalesOrderApi.OrderId request)
+        public SalesOrderApi.OrderResponse GetOrder(SalesOrderApi.OrderId request)
         {
             var url = SERVICEURL + PORT;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
-
-            SalesOrderApi.OrderResponse order = new SalesOrderApi.OrderResponse();
-            var reply = await client.GetOrderAsync(request);
-            return Task.FromResult(order).Result;
+            var reply = client.GetOrder(request);
+            return Task.FromResult(reply).Result;
         }
 
+        public SalesOrderApi.OrderReply SendOrder(SalesOrderApi.OrderRequest request)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
+            var reply = client.SendOrder(request);
+            return Task.FromResult(reply).Result;
+        }
     }
 }
