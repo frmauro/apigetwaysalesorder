@@ -38,14 +38,14 @@ app.MapPost("/findUserByEmailAndPassword", (UserEmailPasswordDto dto, UserServic
 .WithName("FindUserByEmailAndPassword");
 
 //gel all users
-app.MapGet("/users", (UserServiceGRPC serviceGRPC) => 
+app.MapGet("/users", (UserServiceGRPC serviceGRPC) =>
 {
     var users = serviceGRPC.GetUsers(new SalesUserApi.Empty());
     return users;
 });
 
 //get user by id
-app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) => 
+app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) =>
 {
     SalesUserApi.UserRequestId request = new SalesUserApi.UserRequestId();
     request.Id = id;
@@ -54,14 +54,14 @@ app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) =>
 });
 
 //create user
-app.MapPost("/CreateUser", (UserCreateDto dto, UserServiceGRPC serviceGRPC) => 
+app.MapPost("/CreateUser", (UserCreateDto dto, UserServiceGRPC serviceGRPC) =>
 {
     var user = serviceGRPC.Create(dto);
     return user;
 });
 
 //update user
-app.MapPut("/UpdateUser", (UserUpdateDto dto, UserServiceGRPC serviceGRPC) => 
+app.MapPut("/UpdateUser", (UserUpdateDto dto, UserServiceGRPC serviceGRPC) =>
 {
     var user = serviceGRPC.Update(dto);
     return user;
@@ -148,14 +148,18 @@ app.MapGet("/getAllOrders", (OrderServiceGRPC serviceGRPC) =>
 
 
 //get order by id
-app.MapGet("/getOrderById/{id}", (int id) =>
+app.MapGet("/getOrder/{id}", (int id, OrderServiceGRPC serviceGRPC) =>
 {
-    return new OrderDto(1, "Order 001", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
-        new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
-    });
+    // return new OrderDto(1, "Order 001", "2020-07-20T19:53:07Z", 1, "1", new List<OrderItemDto>() {
+    //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
+    // });
 
+    var request = new SalesOrderApi.OrderId();
+    request.Id = id;
+    var result = serviceGRPC.GetOrder(request);
+    return result;
 })
-.WithName("GetOrderById");
+.WithName("GetOrder");
 
 
 //create order 
