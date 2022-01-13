@@ -34,6 +34,6 @@ curl -X POST -H "Content-Type: application/json" -d '{"id": 0, "description": "O
 
 
  ## command CURL via POST (order)
-curl -X PUT -H "Content-Type: application/json" -d '{"id": 4, "description": "Order 004", "orderStatus": 1, "userId": "611aa80245c2ed2212c3ec3d", "items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 250, "productId": 1}]}' http://localhost:5158/UpdateOrder
+curl -X PUT -H "Content-Type: application/json" -d '{"id": 4, "description": "Order 004", "orderStatus": 1, "userId": "611aa80245c2ed2212c3ec3d", "items": [{"id": 4, "description": "Product 001", "quantity": 1, "price": 450, "productId": 1}]}' http://localhost:5158/UpdateOrder
 
 
