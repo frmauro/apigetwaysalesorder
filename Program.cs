@@ -1,7 +1,10 @@
 using ApiGetwaySalesOrder.Dtos;
 using ApiGetwaySalesOrder.Services;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -14,6 +17,7 @@ builder.Services.AddSingleton<OrderServiceGRPC>();
 //builder.Services.addGrp
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -38,9 +42,9 @@ app.MapPost("/findUserByEmailAndPassword", (UserEmailPasswordDto dto, UserServic
 .WithName("FindUserByEmailAndPassword");
 
 //gel all users
-app.MapGet("/users", (UserServiceGRPC serviceGRPC) =>
+app.MapGet("/users", async (UserServiceGRPC serviceGRPC) =>
 {
-    var users = serviceGRPC.GetUsers(new SalesUserApi.Empty());
+    var users = await serviceGRPC.GetUsers(new SalesUserApi.Empty());
     return users;
 });
 
@@ -220,6 +224,14 @@ app.MapPut("/updateOrder/{id}", (int id, OrderDto order, OrderServiceGRPC servic
 .WithName("UpdateOrder");
 // ******************************* END COMUNICATION WITH API ORDER **********************************************************
 
+
+
+// global cors policy
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 
 
 app.Run();
