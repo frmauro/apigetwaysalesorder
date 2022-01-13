@@ -58,5 +58,15 @@ namespace ApiGetwaySalesOrder.Services
             var reply = client.SendOrder(request);
             return Task.FromResult(reply).Result;
         }
+
+        public SalesOrderApi.OrderReply UpdateOrder(SalesOrderApi.OrderRequest request)
+        {
+            var url = SERVICEURL + PORT;
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
+            var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
+            var reply = client.UpdateOrder(request);
+            return Task.FromResult(reply).Result;
+        }
     }
 }

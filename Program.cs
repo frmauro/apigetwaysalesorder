@@ -191,10 +191,31 @@ app.MapPost("/createOrder", (OrderDto order, OrderServiceGRPC serviceGRPC) =>
 
 
 //update order 
-app.MapPut("/updateOrder/{id}", (int id, OrderDto order) =>
+app.MapPut("/updateOrder/{id}", (int id, OrderDto order, OrderServiceGRPC serviceGRPC) =>
 {
-    return id;
+    var request = new SalesOrderApi.OrderRequest();
+    request.Id = id;
+    request.Description = order.Description;
+    request.Status = order.OrderStatus.ToString();
+    request.Userid = order.UserId;
 
+    var itemsOrderRequest = new List<SalesOrderApi.ItemOrderRequest>();
+    if (order.Items != null)
+        order.Items.ForEach(i =>
+        {
+            var itemOrderRequest = new SalesOrderApi.ItemOrderRequest();
+            itemOrderRequest.Id = i.Id.HasValue ? i.Id.Value : 0;
+            itemOrderRequest.Description = i.Description;
+            itemOrderRequest.Price = i.Price.ToString();
+            itemOrderRequest.ProductId = i.ProductId.HasValue ? i.ProductId.Value : 0;
+            itemOrderRequest.Quantity = i.Quantity.HasValue ? i.Quantity.Value : 0;
+            itemsOrderRequest.Add(itemOrderRequest);
+        });
+
+    request.Items = new SalesOrderApi.ItemsOrderRequest();
+    request.Items.Items.AddRange(itemsOrderRequest);
+    var reply = serviceGRPC.UpdateOrder(request);
+    return reply;
 })
 .WithName("UpdateOrder");
 // ******************************* END COMUNICATION WITH API ORDER **********************************************************
