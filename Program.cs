@@ -2,6 +2,7 @@ using ApiGetwaySalesOrder.Dtos;
 using ApiGetwaySalesOrder.Services;
 using System.Text.Json;
 
+string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
@@ -15,6 +16,15 @@ builder.Services.AddSingleton<ProductServiceGRPC>();
 builder.Services.AddSingleton<UserServiceGRPC>();
 builder.Services.AddSingleton<OrderServiceGRPC>();
 //builder.Services.addGrp
+
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy(name: MyAllowSpecificOrigins,
+    builder =>
+    {
+         builder.WithOrigins("*");
+    });
+});
 
 var app = builder.Build();
 
@@ -235,4 +245,5 @@ app.UseCors(x => x
 
 
 app.Run();
+//await app.RunAsync();
 

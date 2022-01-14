@@ -116,7 +116,7 @@ namespace ApiGetwaySalesOrder.Services
         }
 
 
-        public async Task<UserUpdateDto> Update(UserUpdateDto dto)
+        public UserUpdateDto Update(UserUpdateDto dto)
         {
             var url = SERVICEURL + PORT;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
@@ -131,7 +131,7 @@ namespace ApiGetwaySalesOrder.Services
             request.UserType = dto.UserType;
             request.Status = dto.Status;
 
-            var reply = await client.UpdateAsync(request);
+            var reply =  client.Update(request);
 
             return Task.FromResult(dto).Result;
 
