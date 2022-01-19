@@ -77,6 +77,7 @@ app.MapPost("/CreateUser", (UserCreateDto dto, UserServiceGRPC serviceGRPC) =>
 //update user
 app.MapPut("/UpdateUser", (UserUpdateDto dto, UserServiceGRPC serviceGRPC) =>
 {
+    //var user = new UserUpdateDto();
     var user = serviceGRPC.Update(dto);
     return user;
 });
