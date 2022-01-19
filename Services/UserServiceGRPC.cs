@@ -93,7 +93,7 @@ namespace ApiGetwaySalesOrder.Services
         }
 
 
-        public async Task<UserCreateDto> Create(UserCreateDto dto)
+        public UserCreateDto Create(UserCreateDto dto)
         {
             var url = SERVICEURL + PORT;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
@@ -107,12 +107,10 @@ namespace ApiGetwaySalesOrder.Services
             request.UserType = dto.UserType;
             request.Status = dto.Status;
 
-            var reply = await client.CreateAsync(request);
-
+            var reply = client.Create(request);
             dto.Id = reply.Id;
 
             return Task.FromResult(dto).Result;
-
         }
 
 
