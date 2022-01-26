@@ -40,7 +40,7 @@ namespace ApiGetwaySalesOrder.Services
         }
 
 
-        public async Task<SalesProductApi.ItemResponse> GetProductById(int id)
+        public async Task<SalesProductApi.ProductResponse> GetProductById(int id)
         {
             var url = SERVICEURL + PORT;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
@@ -54,8 +54,8 @@ namespace ApiGetwaySalesOrder.Services
 
             var reply = await client.GetProductAsync(productId);
 
-            response.Items.Add(reply);
-            return Task.FromResult(response).Result;
+            //response.Items.Add(reply);
+            return Task.FromResult(reply).Result;
         }
 
         public async Task<int> InsertProduct(ProductDto dto)

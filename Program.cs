@@ -19,11 +19,11 @@ builder.Services.AddSingleton<OrderServiceGRPC>();
 
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy(name: MyAllowSpecificOrigins,
-    builder =>
-    {
-         builder.WithOrigins("*");
-    });
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+      builder =>
+      {
+          builder.WithOrigins("*");
+      });
 });
 
 var app = builder.Build();
@@ -93,19 +93,24 @@ app.MapGet("/getAllProduct", (ProductServiceGRPC serviceGRPC) =>
 {
     var products = serviceGRPC.GetProducts(new SalesProductApi.Empty());
     //return new List<ProductDto>() { new ProductDto(1, "Product 001", 195, "Active", 200.0), new ProductDto(1, "Product 002", 200, "Active", 300.0) }.ToArray();
-    new List<ProductDto>() { new ProductDto(1, "Product 001", 195, "Active", 200.0), new ProductDto(1, "Product 002", 200, "Active", 300.0) }.ToArray();
-    return products;
+    var productsDtos = new List<ProductDto>();
 
+    products.Result.Items.ToList().ForEach(p =>
+     {
+         var currentDto = new ProductDto(p.Id, p.Description, Convert.ToInt32(p.Amount), p.Status, Convert.ToDouble(p.Price)); 
+         productsDtos.Add(currentDto);
+     });
+
+    return productsDtos.ToArray();
 })
 .WithName("GetAllProduct");
 
 //get product By Id
 app.MapGet("/getProductById/{id}", (int id, ProductServiceGRPC serviceGRPC) =>
 {
-    var product = serviceGRPC.GetProductById(id);
-    new ProductDto(1, "Product 001", 195, "Active", 200.0);
+    var product = serviceGRPC.GetProductById(id).Result;
+    new ProductDto(product.Id, product.Description, Convert.ToInt32(product.Amount), product.Status, Convert.ToDouble(product.Price));
     return product;
-
 })
 .WithName("GetProductById");
 
