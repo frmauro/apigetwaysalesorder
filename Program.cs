@@ -161,7 +161,7 @@ app.MapGet("/getAllOrders", (OrderServiceGRPC serviceGRPC) =>
     // }) }.ToArray();
 
     var result = serviceGRPC.GetOrders(new SalesOrderApi.Empty());
-    return result;
+    return result.Items;
 })
 .WithName("GetAllOrders");
 
