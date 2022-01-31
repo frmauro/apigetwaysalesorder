@@ -176,7 +176,7 @@ app.MapGet("/getOrder/{id}", (int id, OrderServiceGRPC serviceGRPC) =>
     // var dto = new OrderDto(result.Id, result.Description, result.Moment, Convert.ToInt32(result.Status), result.Userid, new List<OrderItemDto>() {
     //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
     // });
-    return result;
+    return result.Items;
 })
 .WithName("GetOrder");
 
