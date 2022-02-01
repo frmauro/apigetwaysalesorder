@@ -173,10 +173,16 @@ app.MapGet("/getOrder/{id}", (int id, OrderServiceGRPC serviceGRPC) =>
     var request = new SalesOrderApi.OrderId();
     request.Id = id;
     var result = serviceGRPC.GetOrder(request);
-    // var dto = new OrderDto(result.Id, result.Description, result.Moment, Convert.ToInt32(result.Status), result.Userid, new List<OrderItemDto>() {
-    //     new OrderItemDto(1, "Product 001", 1, 200.0), new OrderItemDto(2, "Product 002", 1, 300.0)
-    // });
-    return result.Items;
+
+    var dto = new OrderDto(result.Id, result.Description, result.Moment, Convert.ToInt32(result.Status), result.Userid);
+    dto.Items = new List<OrderItemDto>();
+
+    result.Items.Items.ToList().ForEach(it => {
+        var currentDto = new OrderItemDto(it.Id, it.ProductId, it.Description, it.Quantity, Convert.ToDouble(it.Price));
+        dto.Items.Add(currentDto);
+    });
+
+    return dto;
 })
 .WithName("GetOrder");
 
@@ -187,7 +193,7 @@ app.MapPost("/createOrder", (OrderDto order, OrderServiceGRPC serviceGRPC) =>
     var request = new SalesOrderApi.OrderRequest();
     request.Description = order.Description;
     //request.Moment = order.Moment;
-    request.Status = order.OrderStatus.ToString();
+    request.Status = order.Status.ToString();
     request.Userid = order.UserId;
 
     var itemsOrderRequest = new List<SalesOrderApi.ItemOrderRequest>();
@@ -216,7 +222,7 @@ app.MapPut("/updateOrder/{id}", (int id, OrderDto order, OrderServiceGRPC servic
     var request = new SalesOrderApi.OrderRequest();
     request.Id = id;
     request.Description = order.Description;
-    request.Status = order.OrderStatus.ToString();
+    request.Status = order.Status.ToString();
     request.Userid = order.UserId;
 
     var itemsOrderRequest = new List<SalesOrderApi.ItemOrderRequest>();
