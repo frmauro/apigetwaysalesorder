@@ -10,7 +10,7 @@ namespace ApiGetwaySalesOrder.Services
         //private int PORT = 5000;
 
         //container PORT 
-        private const int PORT = 9090;
+        private const int PORT = 9091;
 
         // use from local to docker container without compose
         private const string SERVICEURL = "http://127.0.0.1:";
@@ -22,20 +22,32 @@ namespace ApiGetwaySalesOrder.Services
         // use for service kubernetes
         //private const string SERVICEURL = "productapigrpc";
 
-        public async Task<SalesProductApi.ItemResponse> GetProducts(SalesProductApi.Empty request)
+        public List<ProductDto> GetProducts(SalesProductApi.Empty request)
         {
             var url = SERVICEURL + PORT;
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
 
-            List<SalesProductApi.ProductResponse> products = new List<SalesProductApi.ProductResponse>();
-            SalesProductApi.ItemResponse response = new SalesProductApi.ItemResponse();
+            List<ProductDto> productsDto = new List<ProductDto>();
 
-            var reply = await client.GetProductsAsync(request);
+            var reply = client.GetProducts(request);
+            var items = reply.Items;
 
-            response.Items.AddRange(products);
-            return Task.FromResult(reply).Result;
+
+            foreach (var item in items)
+            {
+                ProductDto dto = new ProductDto();
+                dto.Id = item.Id;
+                dto.Description = item.Description;
+                dto.Amount = Convert.ToInt32(item.Amount);
+                dto.Price = Convert.ToDouble(item.Price);
+                dto.Status = item.Status;
+                productsDto.Add(dto);
+            }
+            
+
+            return productsDto;
 
         }
 

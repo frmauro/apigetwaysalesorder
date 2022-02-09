@@ -91,16 +91,9 @@ app.MapPut("/UpdateUser", (UserUpdateDto dto, UserServiceGRPC serviceGRPC) =>
 //get all product
 app.MapGet("/getAllProduct", (ProductServiceGRPC serviceGRPC) =>
 {
-    var products = serviceGRPC.GetProducts(new SalesProductApi.Empty());
+    var productsDtos = serviceGRPC.GetProducts(new SalesProductApi.Empty());
     //return new List<ProductDto>() { new ProductDto(1, "Product 001", 195, "Active", 200.0), new ProductDto(1, "Product 002", 200, "Active", 300.0) }.ToArray();
-    var productsDtos = new List<ProductDto>();
-
-    products.Result.Items.ToList().ForEach(p =>
-     {
-         var currentDto = new ProductDto(p.Id, p.Description, Convert.ToInt32(p.Amount), p.Status, Convert.ToDouble(p.Price)); 
-         productsDtos.Add(currentDto);
-     });
-
+    //var productsDtos = new List<ProductDto>();
     return productsDtos.ToArray();
 })
 .WithName("GetAllProduct");
