@@ -124,6 +124,7 @@ namespace ApiGetwaySalesOrder.Services
                     var item = new SalesProductApi.UpdateAmountRequest();
                     item.Amount = itemdto.Quantity.ToString();
                     item.Id = Convert.ToInt32(itemdto.Id);
+                    item.IsSum = itemdto.IsSum;
                     request.Items.Add(item);
                 });
 
