@@ -40,6 +40,12 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 
 
+// ******************************* START COMUNICATION WITH API TESTE **********************************************************
+app.MapGet("/tst", () => {
+    return "TESTE OK";
+});
+
+
 
 // ******************************* START COMUNICATION WITH API USER **********************************************************
 //user autentication
@@ -248,7 +254,8 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials()); // allow credentials
 
-
+//app.Urls.Add("https://0.0.0.0:5001");
+app.Urls.Add("http://0.0.0.0:5000");
 app.Run();
 //await app.RunAsync();
 

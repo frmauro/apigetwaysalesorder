@@ -13,14 +13,14 @@ namespace ApiGetwaySalesOrder.Services
         //private int PORT = 9090;
 
         // use from local to docker container without compose
-        private String SERVICEURL = "http://127.0.0.1:";
+        //private String SERVICEURL = "http://127.0.0.1:";
         //private String SERVICEURL = "172.17.0.6";
         // use from container to docker container without compose
         //private String SERVICEURL = "salesusernode";
         // use from container to docker container with compose
         //private String SERVICEURL = "user-api";
         // use for service kubernetes
-        //private String SERVICEURL = "apiusergrpc";
+        private String SERVICEURL = "apiusergrpc";
 
 
         public async Task<SalesUserApi.User> GetByEmailAndPassword(UserEmailPasswordDto dto)
