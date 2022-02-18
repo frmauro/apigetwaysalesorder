@@ -98,7 +98,8 @@ namespace ApiGetwaySalesOrder.Services
 
         public UserCreateDto Create(UserCreateDto dto)
         {
-            var url = SERVICEURL + PORT;
+            //var url = SERVICEURL + PORT;
+            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesUserApi.UserService.UserServiceClient(channel);
