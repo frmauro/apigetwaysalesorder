@@ -74,6 +74,8 @@ app.MapGet("/GetUserById/{id}", (string id, UserServiceGRPC serviceGRPC) =>
     request.Id = id;
     var user = serviceGRPC.Get(request);
     return user;
+    // var user = serviceGRPC.Get(request);
+    // return request.Id;
 });
 
 //create user
