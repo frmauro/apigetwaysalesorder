@@ -45,6 +45,9 @@ app.MapGet("/tst", () => {
     return "TESTE OK";
 });
 
+app.MapGet("/teste/{id}", (string id) => {
+    return $"TESTE OK - {id} !";
+});
 
 
 // ******************************* START COMUNICATION WITH API USER **********************************************************

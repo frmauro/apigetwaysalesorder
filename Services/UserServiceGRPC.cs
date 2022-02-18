@@ -43,7 +43,9 @@ namespace ApiGetwaySalesOrder.Services
 
         public async Task<List<SalesUserApi.User>> GetUsers(SalesUserApi.Empty request)
         {
-            var url = SERVICEURL + PORT;
+            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
+            //var url = "http://apiusergrpc:50051";
+
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesUserApi.UserService.UserServiceClient(channel);
