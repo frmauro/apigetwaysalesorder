@@ -55,7 +55,8 @@ namespace ApiGetwaySalesOrder.Services
 
         public async Task<SalesProductApi.ProductResponse> GetProductById(int id)
         {
-            var url = SERVICEURL + PORT;
+            //var url = SERVICEURL + PORT;
+            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
@@ -73,7 +74,8 @@ namespace ApiGetwaySalesOrder.Services
 
         public async Task<int> InsertProduct(ProductDto dto)
         {
-            var url = SERVICEURL + PORT;
+            //var url = SERVICEURL + PORT;
+            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
@@ -93,7 +95,8 @@ namespace ApiGetwaySalesOrder.Services
 
         public async Task<int> UpdateProduct(ProductDto dto)
         {
-            var url = SERVICEURL + PORT;
+            //var url = SERVICEURL + PORT;
+            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);

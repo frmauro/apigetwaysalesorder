@@ -15,6 +15,8 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "description": "Or
  ## update product request PUT via CURL
  curl -X PUT -H "Content-Type: application/json" -d '{"Id": 1, "Description": "Product 001", "Amount": 250, "Status": "Active", "Price": "600"}' http://localhost:5158/UpdateProduct
 
+ curl -X PUT -H "Content-Type: application/json" -d '{"Id": 1, "Description": "Product 001", "Amount": 200, "Status": "Active", "Price": "600"}' http://salesorder.com/UpdateProduct
+
 
 
 ## user autenticate request POST via CURL

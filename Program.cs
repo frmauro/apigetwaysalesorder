@@ -124,7 +124,7 @@ app.MapGet("/getProductById/{id}", (int id, ProductServiceGRPC serviceGRPC) =>
 app.MapPost("/createProduct", (ProductDto dto, ProductServiceGRPC serviceGRPC) =>
 {
     var id = serviceGRPC.InsertProduct(dto);
-    new ProductDto(1, "Product 001", 195, "Active", 200.0);
+    //new ProductDto(1, "Product 001", 195, "Active", 200.0);
     return id;
 
 })
