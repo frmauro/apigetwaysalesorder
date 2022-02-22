@@ -2,6 +2,9 @@
 
 curl -X POST -H "Content-Type: application/json" -d '{"items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 200, "productId": 1}]}' http://localhost:5158/UpdateAmount
 
+curl -X POST -H "Content-Type: application/json" -d '{"items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 200, "productId": 1}]}' http://salesorder.com/UpdateAmount
+
+
 # verificar qual a porta exata
 curl -X POST -H "Content-Type: application/json" -d '{"id": 0, "description": "Order 001", "orderStatus": 1, "userId": "611aa80245c2ed2212c3ec3d", "items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 200, "productId": 1}]}' http://localhost:5158/CreateOrder
 
@@ -21,6 +24,8 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "description": "Or
 
 ## user autenticate request POST via CURL
  curl -X POST -H "Content-Type: application/json" -d '{"Email": "frmauro8@gmail.com", "Password": "123"}' http://localhost:5158/FindUserByEmailAndPassword
+
+  curl -X POST -H "Content-Type: application/json" -d '{"Email": "frmauro8@gmail.com", "Password": "123"}' http://salesorder.com/findUserByEmailAndPassword
 
 
 ## create user request POST via CURL
