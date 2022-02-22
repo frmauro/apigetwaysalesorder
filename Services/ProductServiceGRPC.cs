@@ -13,18 +13,19 @@ namespace ApiGetwaySalesOrder.Services
         private const int PORT = 9091;
 
         // use from local to docker container without compose
-        private const string SERVICEURL = "http://127.0.0.1:";
+        //private const string SERVICEURL = "http://127.0.0.1:";
         //private const string SERVICEURL = "172.17.0.6";
         // use from container to docker container without compose
         //private const string SERVICEURL = "salesproductapi";
         // use from container to docker container with compose
         //private const string SERVICEURL = "product-api";
         // use for service kubernetes
-        //private const string SERVICEURL = "productapigrpc";
+        private const string SERVICEURL = "productapigrpc";
 
         public List<ProductDto> GetProducts(SalesProductApi.Empty request)
         {
-            var url = SERVICEURL + PORT;
+            //var url = SERVICEURL + PORT;
+            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesProductApi.ProductServiceProto.ProductServiceProtoClient(channel);
