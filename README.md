@@ -29,6 +29,11 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "description": "Or
  curl -X PUT -H "Content-Type: application/json" -d '{"id": "61d7058ea8537e2b468f8d75", "Name": "Joca Silva", "Email": "jocas@gmail.com", "Password": "123", "UserType": "Client", "Status": "Active"}' http://localhost:5158/updateUser
 
 
+ curl -X PUT -H "Content-Type: application/json" -d '{"id": "615df4928dc8279ab1357f89", "Name": "Alexandre Silva", "Email": "as001@gmail.com", "Password": "123", "UserType": "Client", "Status": "Active"}' http://salesorder.com/updateUser
+
+
+
+
  ## command CURL via POST (order)
 curl -X POST -H "Content-Type: application/json" -d '{"id": 0, "description": "Order 004", "orderStatus": 1, "userId": "611aa80245c2ed2212c3ec3d", "items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 200, "productId": 1}]}' http://localhost:5158/CreateOrder
 
