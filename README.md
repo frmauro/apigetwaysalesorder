@@ -1,5 +1,14 @@
-# apigetwaysalesorder
+## create image docker command
+docker build --tag apigetway .
 
+## create docker container command
+docker run --name apigetway -d -p 5000:5000  --link orderapi  apigetway
+
+## many another commands
+curl http://localhost:5000/GetAllOrders
+
+
+# apigetwaysalesorder
 curl -X POST -H "Content-Type: application/json" -d '{"items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 200, "productId": 1}]}' http://localhost:5158/UpdateAmount
 
 curl -X POST -H "Content-Type: application/json" -d '{"items": [{"id": 1, "description": "Product 001", "quantity": 1, "price": 200, "productId": 1}]}' http://salesorder.com/UpdateAmount

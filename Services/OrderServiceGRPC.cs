@@ -12,10 +12,10 @@ namespace ApiGetwaySalesOrder.Services
         private const int PORT = 9092;
 
         // use from local to docker container without compose
-        //private const string SERVICEURL = "http://127.0.0.1:";
+        //private const string SERVICEURL = "127.0.0.1";
         //private const string SERVICEURL = "172.17.0.6";
         // use from container to docker container without compose
-        //private const string SERVICEURL = "salesorderapi";
+        //private const string SERVICEURL = "orderapi";
         // use from container to docker container with compose
         //private const string SERVICEURL = "order-api";
         // use for service kubernetes
