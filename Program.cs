@@ -216,6 +216,7 @@ app.MapPost("/createOrder", (OrderDto order, OrderServiceGRPC serviceGRPC) =>
     request.Items.Items.AddRange(itemsOrderRequest);
     var reply = serviceGRPC.SendOrder(request);
     return reply;
+//    return "OKKKKKK";
 })
 .WithName("CreateOrder");
 
