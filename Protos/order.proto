@@ -10,6 +10,8 @@ service OrderServiceProto {
     rpc GetOrders (Empty) returns (ItemResponse);
     // get order by id
     rpc GetOrder (OrderId) returns (OrderResponse);
+    // get order by user id
+    rpc GetOrderByUserId (UserId) returns (ItemResponse);
     // update order
     rpc UpdateOrder (OrderRequest) returns (OrderReply);
 }
@@ -45,6 +47,10 @@ message OrderRequest {
 
   message OrderId {
     int32 id = 1;
+  }
+
+  message UserId {
+    string id = 1;
   }
 
   message Empty {}

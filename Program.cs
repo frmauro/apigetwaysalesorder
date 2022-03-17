@@ -41,11 +41,13 @@ if (app.Environment.IsDevelopment())
 
 
 // ******************************* START COMUNICATION WITH API TESTE **********************************************************
-app.MapGet("/tst", () => {
+app.MapGet("/tst", () =>
+{
     return "TESTE OK";
 });
 
-app.MapGet("/teste/{id}", (string id) => {
+app.MapGet("/teste/{id}", (string id) =>
+{
     return $"TESTE OK - {id} !";
 });
 
@@ -181,7 +183,8 @@ app.MapGet("/getOrder/{id}", (int id, OrderServiceGRPC serviceGRPC) =>
     var dto = new OrderDto(result.Id, result.Description, result.Moment, Convert.ToInt32(result.Status), result.Userid);
     dto.Items = new List<OrderItemDto>();
 
-    result.Items.Items.ToList().ForEach(it => {
+    result.Items.Items.ToList().ForEach(it =>
+    {
         var currentDto = new OrderItemDto(it.Id, it.ProductId, it.Description, it.Quantity, Convert.ToDouble(it.Price));
         dto.Items.Add(currentDto);
     });
@@ -189,6 +192,30 @@ app.MapGet("/getOrder/{id}", (int id, OrderServiceGRPC serviceGRPC) =>
     return dto;
 })
 .WithName("GetOrder");
+
+
+//get order by user id
+app.MapGet("/getOrderByUserId/{id}", (string id, OrderServiceGRPC serviceGRPC) =>
+{
+    var request = new SalesOrderApi.UserId();
+    request.Id = id;
+    var result = serviceGRPC.GetOrderByUserId(request);
+
+    result.Items.ToList().ForEach(o =>
+    {
+         var dto = new OrderDto(o.Id, o.Description, o.Moment, Convert.ToInt32(o.Status), o.Userid);
+         dto.Items = new List<OrderItemDto>();
+    });
+
+    // result.Items.Items.ToList().ForEach(it => {
+    //     var currentDto = new OrderItemDto(it.Id, it.ProductId, it.Description, it.Quantity, Convert.ToDouble(it.Price));
+    //     dto.Items.Add(currentDto);
+    // });
+
+    // return dto;
+    return "OK";
+})
+.WithName("GetOrderByUserId");
 
 
 //create order 
@@ -216,7 +243,7 @@ app.MapPost("/createOrder", (OrderDto order, OrderServiceGRPC serviceGRPC) =>
     request.Items.Items.AddRange(itemsOrderRequest);
     var reply = serviceGRPC.SendOrder(request);
     return reply;
-//    return "OKKKKKK";
+    //    return "OKKKKKK";
 })
 .WithName("CreateOrder");
 
