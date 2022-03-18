@@ -201,10 +201,19 @@ app.MapGet("/getOrderByUserId/{id}", (string id, OrderServiceGRPC serviceGRPC) =
     request.Id = id;
     var result = serviceGRPC.GetOrderByUserId(request);
 
+    var ordersDto = new List<OrderDto>();
+
+
     result.Items.ToList().ForEach(o =>
     {
-         var dto = new OrderDto(o.Id, o.Description, o.Moment, Convert.ToInt32(o.Status), o.Userid);
-         dto.Items = new List<OrderItemDto>();
+        var dto = new OrderDto(o.Id, o.Description, o.Moment, Convert.ToInt32(o.Status), o.Userid);
+        dto.Items = new List<OrderItemDto>();
+        o.Items.Items.ToList().ForEach(it =>
+        {
+            var currentDto = new OrderItemDto(it.Id, it.ProductId, it.Description, it.Quantity, Convert.ToDouble(it.Price));
+            dto.Items.Add(currentDto);
+        });
+        ordersDto.Add(dto);
     });
 
     // result.Items.Items.ToList().ForEach(it => {
@@ -212,8 +221,8 @@ app.MapGet("/getOrderByUserId/{id}", (string id, OrderServiceGRPC serviceGRPC) =
     //     dto.Items.Add(currentDto);
     // });
 
-    // return dto;
-    return "OK";
+     return ordersDto;
+    //return "OK";
 })
 .WithName("GetOrderByUserId");
 
