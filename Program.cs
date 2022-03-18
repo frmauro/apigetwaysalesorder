@@ -216,11 +216,6 @@ app.MapGet("/getOrderByUserId/{id}", (string id, OrderServiceGRPC serviceGRPC) =
         ordersDto.Add(dto);
     });
 
-    // result.Items.Items.ToList().ForEach(it => {
-    //     var currentDto = new OrderItemDto(it.Id, it.ProductId, it.Description, it.Quantity, Convert.ToDouble(it.Price));
-    //     dto.Items.Add(currentDto);
-    // });
-
      return ordersDto;
     //return "OK";
 })
