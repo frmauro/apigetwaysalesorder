@@ -10,7 +10,7 @@ namespace ApiGetwaySalesOrder.Services
         //private int PORT = 5000;
 
         //container PORT 
-        private const int PORT = 9090;
+        private const int PORT = 9091;
 
         // use from local to docker container without compose
         //private const string SERVICEURL = "http://127.0.0.1:";
