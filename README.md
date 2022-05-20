@@ -2,7 +2,7 @@
 docker build --tag apigetway .
 
 ## create docker container command
-docker run --name apigetway -d -p 5000:5000  --link orderapi  apigetway
+docker run --name apigetway -d -p 5000:5000 --link salesusernode --link salesproductapi  --link orderapi --link kafka  apigetway
 
 ## many another commands
 curl http://localhost:5000/GetAllOrders
@@ -58,5 +58,8 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 4, "description": "Or
 
 ## grant permision to my user
 sudo chown -R francisco:francisco /tmp/NuGetScratch/
+
+## get messages of especific topic in Kafka container docker
+docker exec samples_kafka_1 /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning --topic fila_produto
 
 

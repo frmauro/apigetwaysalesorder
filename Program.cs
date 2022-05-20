@@ -2,6 +2,7 @@ using ApiGetwaySalesOrder.Dtos;
 using ApiGetwaySalesOrder.Services;
 using System.Text.Json;
 
+
 string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddSingleton<ProductServiceGRPC>();
+builder.Services.AddSingleton<ProductServiceKAFKA>();
 builder.Services.AddSingleton<UserServiceGRPC>();
 builder.Services.AddSingleton<OrderServiceGRPC>();
 //builder.Services.addGrp
@@ -146,12 +148,39 @@ app.MapPut("/updateProduct", (ProductDto dto, ProductServiceGRPC serviceGRPC) =>
 
 
 //update amount product 
-app.MapPost("/updateAmount", (UpdateAmountDto dto, ProductServiceGRPC serviceGRPC) =>
+
+// app.MapPost("/updateAmount", (UpdateAmountDto dto, ProductServiceGRPC serviceGRPC) =>
+// {
+//     var result = serviceGRPC.UpdateAmount(dto);
+//     return result;
+// })
+// .WithName("UpdateAmount");
+
+// app.MapPost("/updateAmount", (ProductServiceKAFKA serviceKAFKA, HttpContext context) =>
+// {
+//     var result = "";
+//     using (var reader = new StreamReader(context.Request.Body))
+//     {
+//         var body = reader.ReadToEndAsync().Result;
+//         result = serviceKAFKA.SendMsgUpdateAmount(body);
+//     }
+
+//     return result;
+// })
+// .WithName("UpdateAmount");
+
+app.MapPost("/updateAmount", (UpdateAmountDto dto, ProductServiceKAFKA serviceKAFKA) =>
 {
-    var result = serviceGRPC.UpdateAmount(dto);
+    var result = "";
+    var options = new JsonSerializerOptions { WriteIndented = true };
+    string jsonString = JsonSerializer.Serialize(dto, options);
+    result = serviceKAFKA.SendMsgUpdateAmount(jsonString);
+
     return result;
 })
 .WithName("UpdateAmount");
+
+
 // ******************************* END COMUNICATION WITH API PRODUCT **********************************************************
 
 
@@ -216,7 +245,7 @@ app.MapGet("/getOrderByUserId/{id}", (string id, OrderServiceGRPC serviceGRPC) =
         ordersDto.Add(dto);
     });
 
-     return ordersDto;
+    return ordersDto;
     //return "OK";
 })
 .WithName("GetOrderByUserId");

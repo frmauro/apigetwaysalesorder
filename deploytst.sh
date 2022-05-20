@@ -33,6 +33,6 @@ docker build -t apigetway .
 echo "built docker images and proceeding to delete existing container"
 echo "Deploying the updated container"
 
-docker run --name apigetway -d -p 5000:5000  --link orderapi --link salesproductapi --link salesusernode  apigetway
+docker run --name apigetway -d -p 5000:5000  --link salesusernode --link salesproductapi  --link orderapi --link kafka  apigetway
 
 echo "Deploying the container"
