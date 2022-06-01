@@ -13,10 +13,22 @@ var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddSingleton<ProductServiceGRPC>();
+
+var strserviceurlorderapi = builder.Configuration.GetSection("serviceurlorderapi").Value;
+var strorderapiport = builder.Configuration.GetSection("orderapiport").Value;
+builder.Services.AddSingleton<OrderServiceGRPC>(_ => new OrderServiceGRPC(strserviceurlorderapi, strorderapiport));
+
+var strsalesproductapi = builder.Configuration.GetSection("salesproductapi").Value;
+var strsalesproductapiport = builder.Configuration.GetSection("salesproductapiport").Value;
+builder.Services.AddSingleton<ProductServiceGRPC>(_ => new ProductServiceGRPC(strsalesproductapi, strsalesproductapiport));
+
 builder.Services.AddSingleton<ProductServiceKAFKA>();
-builder.Services.AddSingleton<UserServiceGRPC>();
-builder.Services.AddSingleton<OrderServiceGRPC>();
+
+var strserviceurlsalesusernode = builder.Configuration.GetSection("serviceurlsalesusernode").Value;
+var strsalesusernodeport = builder.Configuration.GetSection("salesusernodeport").Value;
+builder.Services.AddSingleton<UserServiceGRPC>(_ => new UserServiceGRPC(strserviceurlsalesusernode, strsalesusernodeport));
+
+
 //builder.Services.addGrp
 
 builder.Services.AddCors(options =>

@@ -6,21 +6,18 @@ namespace ApiGetwaySalesOrder.Services
 {
     public class UserServiceGRPC
     {
-        //Local PORT 
-        private int PORT = 50051;
+        private int PORT;
+        private string serviceurlsalesusernode = string.Empty;
+        private string salesusernodeport = string.Empty;
+        private string SERVICEURL = string.Empty;
 
-        //container PORT 
-        //private int PORT = 9090;
-
-        // use from local to docker container without compose
-        //private String SERVICEURL = "127.0.0.1";
-        //private String SERVICEURL = "172.17.0.6";
-        // use from container to docker container without compose
-        private String SERVICEURL = "salesusernode";
-        // use from container to docker container with compose
-        //private String SERVICEURL = "user-api";
-        // use for service kubernetes
-        //private String SERVICEURL = "apiusergrpc";
+        public UserServiceGRPC(string _serviceurlsalesusernode, string _salesusernodeport)
+        {
+            serviceurlsalesusernode = _serviceurlsalesusernode;
+            salesusernodeport = _salesusernodeport;
+            PORT = Convert.ToInt32(salesusernodeport);
+            SERVICEURL = serviceurlsalesusernode;
+        }
 
 
         public async Task<SalesUserApi.User> GetByEmailAndPassword(UserEmailPasswordDto dto)

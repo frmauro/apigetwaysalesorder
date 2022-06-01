@@ -1,31 +1,29 @@
 using Grpc.Core;
 using Grpc.Net.Client;
+using Microsoft.Extensions.Configuration;
 
 namespace ApiGetwaySalesOrder.Services
 {
     public class OrderServiceGRPC
     {
-        //Local PORT 
-        //private int PORT = 5000;
+        private int PORT;
+        private string serviceurlorderapi = string.Empty;
+        private string orderapiport = string.Empty;
+        private string SERVICEURL = string.Empty;
 
-        //container PORT 
-        private const int PORT = 9093;
-
-        // use from local to docker container without compose
-        //private const string SERVICEURL = "127.0.0.1";
-        //private const string SERVICEURL = "172.17.0.6";
-        // use from container to docker container without compose
-        private const string SERVICEURL = "orderapi";
-        // use from container to docker container with compose
-        //private const string SERVICEURL = "order-api";
-        // use for service kubernetes (Minikube)
-        //private const string SERVICEURL = "orderapigrpc";
+        public OrderServiceGRPC(string _serviceurlorderapi, string _orderapiport)
+        {
+            serviceurlorderapi = _serviceurlorderapi;
+            orderapiport = _orderapiport;
+            PORT = Convert.ToInt32(orderapiport);
+            SERVICEURL = serviceurlorderapi;
+        }
 
 
         public SalesOrderApi.ItemResponse GetOrders(SalesOrderApi.Empty request)
         {
             //var url = SERVICEURL + PORT;
-            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
+            var url = string.Format("http://{0}:{1}", SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
@@ -43,7 +41,7 @@ namespace ApiGetwaySalesOrder.Services
         public SalesOrderApi.OrderResponse GetOrder(SalesOrderApi.OrderId request)
         {
             //var url = SERVICEURL + PORT;
-            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
+            var url = string.Format("http://{0}:{1}", SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
@@ -54,19 +52,19 @@ namespace ApiGetwaySalesOrder.Services
         public SalesOrderApi.ItemResponse GetOrderByUserId(SalesOrderApi.UserId request)
         {
             //var url = SERVICEURL + PORT;
-            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
+            var url = string.Format("http://{0}:{1}", SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
             var reply = client.GetOrderByUserId(request);
             return Task.FromResult(reply).Result;
         }
-        
+
 
         public SalesOrderApi.OrderReply SendOrder(SalesOrderApi.OrderRequest request)
         {
             //var url = SERVICEURL + PORT;
-            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
+            var url = string.Format("http://{0}:{1}", SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
@@ -77,7 +75,7 @@ namespace ApiGetwaySalesOrder.Services
         public SalesOrderApi.OrderReply UpdateOrder(SalesOrderApi.OrderRequest request)
         {
             //var url = SERVICEURL + PORT;
-            var url = string.Format("http://{0}:{1}",SERVICEURL, PORT);
+            var url = string.Format("http://{0}:{1}", SERVICEURL, PORT);
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             using var channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions { Credentials = ChannelCredentials.Insecure });
             var client = new SalesOrderApi.OrderServiceProto.OrderServiceProtoClient(channel);
